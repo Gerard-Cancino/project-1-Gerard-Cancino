@@ -10,9 +10,6 @@ export async function revatureLogin(username:string,password:string):Promise<any
   }
   try{
     let response = await revatureClient.post('/login',credentials);
-    if(response.status===400){
-      throw new BadCredentialsError();
-    }
     return response.data
   }
   catch (e) {

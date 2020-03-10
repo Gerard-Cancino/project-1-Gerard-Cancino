@@ -4,9 +4,11 @@ import { revatureClient } from './revature-client';
 import { User } from './../../models/User';
 
 
-export async function revatureGetUserList():Promise<Array<User>>{
+export async function revatureGetUserList(token:string):Promise<Array<User>>{
   try{
-    let response = await revatureClient.get('/user');
+    let response = await revatureClient.get('/users',{
+      headers:{"Authorization":`${token}`}
+    });
     return response.data;
   }
   catch(e){

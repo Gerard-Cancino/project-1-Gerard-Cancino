@@ -7,9 +7,9 @@ export const userListTypes = {
   INTERNAL_SERVER: "REVATURE_INTERNAL_SERVER"
 }
 
-export const userListActionMapper = () => async (dispatch:Dispatch) => {
+export const userListActionMapper = (token:string) => async (dispatch:Dispatch) => {
   try{
-    let userList = await revatureGetUserList();
+    let userList = await revatureGetUserList(token);
     dispatch({
       type: userListTypes.SUCCESSFUL_GET_USERLIST,
       payload:{
@@ -18,13 +18,15 @@ export const userListActionMapper = () => async (dispatch:Dispatch) => {
     })
   }
   catch(e){
-    if(e.status = 401){
+    if(e.status === 401){
       dispatch({
         type: userListTypes.AUTHORIZATION_FAILED,
         payload:{
           errorMessage: "User is not authorized"
         }
       })
+    }
+    else{
       dispatch({
         type: userListTypes.INTERNAL_SERVER,
         payload:{
