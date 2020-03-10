@@ -4,13 +4,14 @@ import { connect } from "react-redux";
 
 
 const mapStateToProps = (state:IState) => {
+  console.log(state)
   return {
     profile:state.login.profile,
-    errorMessage:state.login.errorMessage
+    token:state.login.token
   }
 }
 
-const mapDispatchToDispatch = {
+const mapDispatchToProps = {
 }
 
-export default connect(mapStateToProps,mapDispatchToDispatch)(RoleMainpageComponent)
+export default connect(mapStateToProps,mapDispatchToProps)(RoleMainpageComponent)

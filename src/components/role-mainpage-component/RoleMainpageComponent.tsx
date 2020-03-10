@@ -1,18 +1,19 @@
 import React from 'react';
-import { Button, Container, Row, Col } from 'react-bootstrap';
+import { Container, Row, Col } from 'react-bootstrap';
 import { User } from '../../models/User';
-import { Link } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
 
 interface IRoleMainpageProps {
-  user:User
+  profile:User,
+  token:string
 }
 
 export class RoleMainpageComponent extends React.Component<IRoleMainpageProps,any>{
   render(){
     return(
-
       <Container>
-        {this.props.user.role.role==="admin"||this.props.user.role.role==="finance-manager"?(
+        {this.props.token==="" && <Redirect to="/"/>}
+        {this.props.profile.role.role==="admin"||this.props.profile.role.role==="finance-manager"?(
           <Row>
             <Col>
               <Link

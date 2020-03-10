@@ -7,7 +7,7 @@ import Role from '../models/Role';
 
 // Initial State
 const initialState:ILoginState={
-  profile: new User(0,'','','','',new Role(0,'')),
+  profile: new User(-1,'','','','',new Role(0,'')),
   token: "",
   errorMessage:"This is a test"
 }
@@ -17,7 +17,7 @@ export const loginReducer = (state=initialState,action:AnyAction) => {
     case loginTypes.SUCCESSFUL_LOGIN:{
       return {
         ...state,
-        profile:action.payload.user,
+        profile:action.payload.profile,
         token:action.payload.token
       }
     }
@@ -31,6 +31,13 @@ export const loginReducer = (state=initialState,action:AnyAction) => {
       return {
         ...state,
         errorMessage:"Something went wrong. Oops!"
+      }
+    }
+    case loginTypes.LOGOUT:{
+      return {
+        ...state,
+        profile:action.payload.profile,
+        token:action.payload.token
       }
     }
     default: 

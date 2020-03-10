@@ -1,35 +1,52 @@
+import { User } from './../models/User';
 import { Dispatch } from 'redux';
-
+import { revatureLogin} from '../remote/revature/login-revature';
+import Role from '../models/Role';
 
 export const loginTypes = {
   SUCCESSFUL_LOGIN: "REVATURE_SUCCESSFUL_LOGIN",
   INVALID_CREDENTIALS: "REVATURE_INVALID_CREDENTIALS",
-  INTERNAL_SERVER: "REVATURE_INTERNAL_SERVER_ERROR"
+  INTERNAL_SERVER: "REVATURE_INTERNAL_SERVER_ERROR",
+  LOGOUT: "REVATURE_LOGOUT"
 }
 
 export const revatureLoginActionMapper = (username:string,password:string) => async (dispatch:Dispatch) => {
   try {
-    // Add the async function for remote
-    let profile = undefined;
-    let token = undefined;
+    let {token,profile} = await revatureLogin(username,password);
     dispatch({
       type: loginTypes.SUCCESSFUL_LOGIN,
       payload:{
-        profile,
-        token
+        token,
+        profile
       }
     })
   }
   catch(e){
-    if(e.state === 400) {
+    if(e.status === 400) {
       dispatch({
-        type:loginTypes.INVALID_CREDENTIALS
+        type:loginTypes.INVALID_CREDENTIALS,
+        payload:{
+          errorMessage: "Invalid Credentials"
+        }
       })
     }
     else{
       dispatch({
-        type:loginTypes.INTERNAL_SERVER
+        type:loginTypes.INTERNAL_SERVER,
+        payload: {
+          errorMessage: "Something went wrong"
+        }
       })
     }
   }
+}
+
+export const revatureLogoutActionMapper = () => (dispatch:Dispatch) => {
+  dispatch({
+    type: loginTypes.LOGOUT,
+    payload:{
+      token:'',
+      profile:new User(-1,"","","","",new Role(-1,""))
+    }
+  })
 }

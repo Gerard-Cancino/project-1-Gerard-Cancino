@@ -5,16 +5,18 @@ import './App.css';
 import { Provider } from 'react-redux';
 import { store } from './Store';
 import { HomepageComponent } from './components/homepage-component/HomepageComponent';
-import { NavbarComponent } from './components/navbar-component/NavbarComponent';
-import { LoginComponent } from './components/login-component/LoginComponent';
+import NavbarComponent from './components/navbar-component/NavbarContainer';
+import LoginComponent from './components/login-component/LoginContainer';
+import RoleMainpageComponent from './components/role-mainpage-component/RoleMainpageContainer';
 
 function App() {
   return (
     <div className="App">
       <Provider store={store} >
-        <Router>
+        <Router >
           <NavbarComponent />
           <Switch>
+            <Route path="/mainpage" component={RoleMainpageComponent}/>
             <Route path="/login" component={LoginComponent}/>
             <Route path="/" component={HomepageComponent}/>
           </Switch>
