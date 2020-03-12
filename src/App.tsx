@@ -9,6 +9,8 @@ import NavbarComponent from './components/navbar-component/NavbarContainer';
 import LoginComponent from './components/login-component/LoginContainer';
 import RoleMainpageComponent from './components/role-mainpage-component/RoleMainpageContainer';
 import UserListComponent from './components/user-list-component/UserListContainer';
+import ProfileComponent from './components/profile-component/ProfileContainer';
+import ReimbursementListComponent from './components/reimbursement-list-component/ReimbursementListContainer';
 
 function App() {
   return (
@@ -17,7 +19,9 @@ function App() {
         <Router >
           <NavbarComponent />
           <Switch>
+            <Route path="/reimbursements" component={ReimbursementListComponent} />
             <Route path="/users" component={UserListComponent} />
+            <Route path="/profile" component={ProfileComponent} />
             <Route path="/mainpage" component={RoleMainpageComponent}/>
             <Route path="/login" component={LoginComponent}/>
             <Route path="/" component={HomepageComponent}/>

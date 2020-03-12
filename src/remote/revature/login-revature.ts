@@ -1,5 +1,4 @@
 import { InternalServerError } from './../../errors/InternalServerError';
-import { BadCredentialsError } from './../../errors/BadCredentialsError';
 import { revatureClient } from './revature-client';
 
 

@@ -5,8 +5,7 @@ import { ProfileComponent } from "./ProfileComponent";
 
 const mapStateToProps = (state:IState) => {
   return {
-    profile:state.login.profile,
-    errorMessage: state.login.errorMessage
+    profile:state.login.profile
   }
 }
 

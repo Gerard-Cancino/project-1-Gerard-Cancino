@@ -1,5 +1,5 @@
 import React from 'react';
-import { Container, Row, Col, Table } from 'react-bootstrap';
+import { Container, Row, Col, Table, FormControl } from 'react-bootstrap';
 import { User } from '../../models/User';
 import { TableRowComponent } from './table-row-component/table-row-component';
 
@@ -9,16 +9,31 @@ interface UserListProps {
   userListActionMapper: (token:string) => void
 }
 
-export class UserListComponent extends React.Component<UserListProps,any>{
+interface UserListState {
+  userQueryString:string
+}
+
+export class UserListComponent extends React.Component<UserListProps,UserListState>{
   constructor(props:any){
     super(props);
+    this.state = {
+      userQueryString:''
+    }
     if(props.userList.length===0){
       this.props.userListActionMapper(this.props.token);
     }
+    this.handlerUserQueryString = this.handlerUserQueryString.bind(this);
+  }
+  handlerUserQueryString (e:any) {
+    this.setState({userQueryString:e.target.value})
   }
   render(){
     return(
       <Container>
+        <Row>
+          <label htmlFor="userFilter">Search for User Filter</label>
+          <FormControl placeholder="id, username, first name, last name, email" onChange={this.handlerUserQueryString}/>
+        </Row>
         <Row>
           <Col className="table-responsive">
             <Table>
@@ -32,7 +47,7 @@ export class UserListComponent extends React.Component<UserListProps,any>{
               <tbody>
                 {this.props.userList.length===0?(
                   <td colSpan={5}>No Users Found</td>
-                ):( this.props.userList.map((el:User)=>
+                ):( this.props.userList.filter((el)=>JSON.stringify(el).includes(this.state.userQueryString)).map((el:User)=>
                   <TableRowComponent key={el.userId} user={el} />
                 ))}
               </tbody>
