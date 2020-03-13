@@ -9,6 +9,7 @@ export async function revatureGetReimbursementListByUserId (token:string, userId
     let response = await revatureClient.get(`/reimbursements/author/userId/${userId}`,{
       headers:{"Authorization":`${token}`}
     })
+    console.log(response ,'mksamlmdmal');
     return response.data;
   }
   catch(e){

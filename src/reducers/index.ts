@@ -1,7 +1,9 @@
+import { userReimbursementListReducer } from './reimbursement-list-reducer';
 import { userListReducer } from './user-list-reducer';
 import { loginReducer } from './login-reducer';
 import { combineReducers } from 'redux';
 import { User } from './../models/User';
+import Reimbursement from '../models/Reimbursement';
 
 
 export interface ILoginState{
@@ -15,12 +17,19 @@ export interface IUserListState{
   errorMessage:string
 }
 
+export interface IReimbursementListState{
+  reimbursementList: Array<Reimbursement>
+  errorMessage:string
+}
+
 export interface IState{
   login:ILoginState,
-  userList:IUserListState
+  userList:IUserListState,
+  reimbursementList:IReimbursementListState
 }
 
 export const state = combineReducers<IState>({
   login:loginReducer,
-  userList:userListReducer
+  userList:userListReducer,
+  reimbursementList:userReimbursementListReducer
 })

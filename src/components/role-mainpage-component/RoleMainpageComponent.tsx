@@ -28,7 +28,7 @@ export class RoleMainpageComponent extends React.Component<IRoleMainpageProps,an
           <Row>
             <Col>
               <Link
-                to="/reimbursements">Reimbursements</Link>
+                to="/user-reimbursements">Reimbursements</Link>
             </Col>
           </Row>
         )}

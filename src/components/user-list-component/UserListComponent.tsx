@@ -46,7 +46,7 @@ export class UserListComponent extends React.Component<UserListProps,UserListSta
               </thead>
               <tbody>
                 {this.props.userList.length===0?(
-                  <td colSpan={5}>No Users Found</td>
+                  <tr><td colSpan={5}>No Users Found</td></tr>
                 ):( this.props.userList.filter((el)=>JSON.stringify(el).includes(this.state.userQueryString)).map((el:User)=>
                   <TableRowComponent key={el.userId} user={el} />
                 ))}

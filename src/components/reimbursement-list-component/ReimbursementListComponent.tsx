@@ -25,7 +25,7 @@ const stateOfLoad = {
 export class ReimbursementListComponent extends React.Component<ReimbursementListProps,ReimbursementListState>{
   constructor(props:any){
     super(props);
-    if(props.location.state.userId){
+    if(props.location.state && props.location.state.userId){
       this.state = {
         reimbursementList: [],
         userId:props.location.state.userId,
@@ -61,8 +61,9 @@ export class ReimbursementListComponent extends React.Component<ReimbursementLis
     e.preventDefault();
     this.getReimbursementListByStatusId();
   }
-  getReimbursementListByUserId(){
+  async getReimbursementListByUserId(){
     this.setState({stateOfLoad:stateOfLoad.SEARCHING})
+    //let res = await revatureGetReimbursementListByUserId(this.props.token, this.state.userId);
     revatureGetReimbursementListByUserId(this.props.token,this.state.userId)
     .then(res=>{
       if(res.length===0){
@@ -78,7 +79,7 @@ export class ReimbursementListComponent extends React.Component<ReimbursementLis
         })
       }
     })
-    .catch(e=>console.log(e));
+    .catch(e=>console.error(e));
   }
   getReimbursementListByStatusId(){
     this.setState({stateOfLoad:stateOfLoad.SEARCHING})
@@ -153,9 +154,9 @@ export class ReimbursementListComponent extends React.Component<ReimbursementLis
               </thead>
               <tbody>
                 {this.state.stateOfLoad===stateOfLoad.SEARCHING &&
-                  <td colSpan={11}>Searching</td>}
+                  <tr><td colSpan={11}>Searching</td></tr>}
                 {this.state.stateOfLoad===stateOfLoad.NO_RESULT &&
-                  <td colSpan={11}>No Results Found</td>}
+                  <tr><td colSpan={11}>No Results Found</td></tr>}
                 {this.state.stateOfLoad===stateOfLoad.FOUND_RESULT && this.state.reimbursementList.length!==0 &&
                   this.state.reimbursementList.map(el=>
                     <TableRowComponent key={el.reimbursementId} reimbursement={el} />

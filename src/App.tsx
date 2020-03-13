@@ -11,6 +11,7 @@ import RoleMainpageComponent from './components/role-mainpage-component/RoleMain
 import UserListComponent from './components/user-list-component/UserListContainer';
 import ProfileComponent from './components/profile-component/ProfileContainer';
 import ReimbursementListComponent from './components/reimbursement-list-component/ReimbursementListContainer';
+import UserReimbursementComponent from './components/user-reimbursements-component/UserReimbursementContainer';
 
 function App() {
   return (
@@ -19,6 +20,7 @@ function App() {
         <Router >
           <NavbarComponent />
           <Switch>
+            <Route path="/user-reimbursements" component={UserReimbursementComponent}/>
             <Route path="/reimbursements" component={ReimbursementListComponent} />
             <Route path="/users" component={UserListComponent} />
             <Route path="/profile" component={ProfileComponent} />
