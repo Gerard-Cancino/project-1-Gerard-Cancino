@@ -7,7 +7,7 @@ export const reimbursementListTypes = {
   INTERNAL_SERVER: "REVATURE_INTERAL_SERVER"
 }
 
-export const revatureUserReimbursementListActionMapper = (token:string,userId:number) => async (dispatch:Dispatch) => {
+export const revatureGetUserReimbursementListActionMapper = (token:string,userId:number) => async (dispatch:Dispatch) => {
   console.log("in action mapper");
   try {
     let reimbursementList = await revatureGetReimbursementListByUserId(token,userId);

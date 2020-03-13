@@ -1,5 +1,5 @@
 import { IState } from "../../reducers";
-import { revatureUserReimbursementListActionMapper } from '../../action-mappers/user-reimbursement-list-action-mapper';
+import { revatureGetUserReimbursementListActionMapper } from '../../action-mappers/user-reimbursement-list-action-mapper';
 import { connect } from "react-redux";
 import { UserReimbursementComponent } from "./UserReimbursementComponent";
 
@@ -13,7 +13,7 @@ const mapStateToProps = (state:IState) => {
 }
 
 const mapDispatchToProps = {
-  revatureUserReimbursementListActionMapper
+  revatureGetUserReimbursementListActionMapper
 }
 
 export default connect(mapStateToProps,mapDispatchToProps)(UserReimbursementComponent);
