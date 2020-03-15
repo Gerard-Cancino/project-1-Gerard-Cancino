@@ -1,11 +1,12 @@
-import React from 'react';
+import React, { SyntheticEvent } from 'react';
 import Reimbursement from "../../../models/Reimbursement";
 import { Button } from 'react-bootstrap';
 
 
 
 interface tableRowInterface {
-  reimbursement:Reimbursement
+  reimbursement:Reimbursement,
+  updateReimbursement:(e:SyntheticEvent,i:number,s:number)=> void
 }
 
 export class TableRowComponent extends React.PureComponent<tableRowInterface,any>{
@@ -23,8 +24,8 @@ export class TableRowComponent extends React.PureComponent<tableRowInterface,any
         <td>{this.props.reimbursement.type}</td>
         {this.props.reimbursement.status===1 &&
           <React.Fragment>
-            <td><Button variant="success">Approve</Button></td>
-            <td><Button variant="danger">Decline</Button></td>
+            <td><Button onClick={(e:SyntheticEvent)=>this.props.updateReimbursement(e,this.props.reimbursement.reimbursementId,2)} variant="success">Approve</Button></td>
+            <td><Button onClick={(e:SyntheticEvent)=>this.props.updateReimbursement(e,this.props.reimbursement.reimbursementId,3)} variant="danger">Decline</Button></td>
           </React.Fragment>
         }
       </tr>

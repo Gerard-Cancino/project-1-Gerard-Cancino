@@ -41,10 +41,11 @@ export async function revatureGetReimbursementListByStatusId (token:string, stat
 }
 export async function revatureCreateReimbursement(token:string, userId:number,amount:number,description:string,type:number):Promise<Reimbursement>{
   try{
+    console.log('DESCRIPTION:' + description)
     let response = await revatureClient.post(`/reimbursements`,{
       author_id:userId,
       amount:amount,
-      decription:description,
+      description:description,
       type:type
     },{
       headers:{"Authorization":`${token}`}
@@ -53,6 +54,26 @@ export async function revatureCreateReimbursement(token:string, userId:number,am
   }
   catch(e){
     console.error(e.stack)
+    if(e.state===401){
+      throw new UnauthorizedError();
+    }
+    else{
+      throw new InternalServerError();
+    }
+  }
+}
+
+export async function revatureUpdateReimbursement(token:string,reimbursementId:number,status_id:number){
+  try{
+    let response = await revatureClient.patch('/reimbursements',{
+      id:reimbursementId,
+      status_id:status_id
+    },{
+      headers:{"Authorization":token}
+    })
+    return response.data;
+  }
+  catch(e){
     if(e.state===401){
       throw new UnauthorizedError();
     }

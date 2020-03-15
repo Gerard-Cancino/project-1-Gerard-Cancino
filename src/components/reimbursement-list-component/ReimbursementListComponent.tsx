@@ -1,7 +1,7 @@
-import React from 'react';
+import React, { SyntheticEvent } from 'react';
 import { Container, Row, Form, Button, Col, Table } from 'react-bootstrap';
 import Reimbursement from '../../models/Reimbursement';
-import { revatureGetReimbursementListByUserId, revatureGetReimbursementListByStatusId } from '../../remote/revature/reimbursement-list-revature';
+import { revatureGetReimbursementListByUserId, revatureGetReimbursementListByStatusId, revatureUpdateReimbursement } from '../../remote/revature/reimbursement-list-revature';
 import { TableRowComponent } from './table-row-component/TableRowComponent';
 
 interface ReimbursementListProps {
@@ -47,6 +47,7 @@ export class ReimbursementListComponent extends React.Component<ReimbursementLis
     this.eventGetRLByStatusId=this.eventGetRLByStatusId.bind(this);
     this.getReimbursementListByUserId=this.getReimbursementListByUserId.bind(this);
     this.getReimbursementListByStatusId=this.getReimbursementListByStatusId.bind(this);
+    this.updateReimbursement=this.updateReimbursement.bind(this);
   }
   componentDidMount(){
     if(this.state.userId){
@@ -64,8 +65,8 @@ export class ReimbursementListComponent extends React.Component<ReimbursementLis
   async getReimbursementListByUserId(){
     this.setState({stateOfLoad:stateOfLoad.SEARCHING})
     //let res = await revatureGetReimbursementListByUserId(this.props.token, this.state.userId);
-    revatureGetReimbursementListByUserId(this.props.token,this.state.userId)
-    .then(res=>{
+    try{
+      const res = await revatureGetReimbursementListByUserId(this.props.token,this.state.userId);
       if(res.length===0){
         this.setState({
           reimbursementList:res,
@@ -78,8 +79,10 @@ export class ReimbursementListComponent extends React.Component<ReimbursementLis
           stateOfLoad:stateOfLoad.FOUND_RESULT
         })
       }
-    })
-    .catch(e=>console.error(e));
+    }
+    catch(e){
+      console.error(e)
+    }
   }
   getReimbursementListByStatusId(){
     this.setState({stateOfLoad:stateOfLoad.SEARCHING})
@@ -100,6 +103,18 @@ export class ReimbursementListComponent extends React.Component<ReimbursementLis
     })
     .catch(e=>console.log(e))
   }
+  async updateReimbursement(e:SyntheticEvent,reimbursementId:number,status_id:number){
+    e.preventDefault();
+    try{
+      await revatureUpdateReimbursement(this.props.token,reimbursementId,status_id);
+      this.setState({statusId:status_id},()=>{
+        this.getReimbursementListByStatusId()
+      })
+    }
+    catch(e){
+      console.error(e);
+    }
+  }
   handlerUserId(e:any){
     console.log(e.target.value)
     this.setState({userId:e.target.value})
@@ -115,7 +130,7 @@ export class ReimbursementListComponent extends React.Component<ReimbursementLis
             <Form onSubmit={this.eventGetRLByUserId}>
               <Form.Group controlId="searchUserById">
                 <Form.Label>Search By User ID</Form.Label>
-                <Form.Control type="text" placeholder="User ID" defaultValue={this.state.userId} onChange={this.handlerUserId}/> 
+                <Form.Control type="number" placeholder="User ID" defaultValue={this.state.userId} onChange={this.handlerUserId}/> 
               </Form.Group>
               <Button type="submit">Submit</Button>
             </Form>
@@ -149,8 +164,8 @@ export class ReimbursementListComponent extends React.Component<ReimbursementLis
                 <th>Description</th>
                 <th>Resolver</th>
                 <th>Type</th>
-                <th>A</th>
-                <th>D</th>
+                <th></th>
+                <th></th>
               </thead>
               <tbody>
                 {this.state.stateOfLoad===stateOfLoad.SEARCHING &&
@@ -159,7 +174,7 @@ export class ReimbursementListComponent extends React.Component<ReimbursementLis
                   <tr><td colSpan={11}>No Results Found</td></tr>}
                 {this.state.stateOfLoad===stateOfLoad.FOUND_RESULT && this.state.reimbursementList.length!==0 &&
                   this.state.reimbursementList.map(el=>
-                    <TableRowComponent key={el.reimbursementId} reimbursement={el} />
+                    <TableRowComponent key={el.reimbursementId} reimbursement={el} updateReimbursement={this.updateReimbursement}/>
                   )
                 }
               </tbody>

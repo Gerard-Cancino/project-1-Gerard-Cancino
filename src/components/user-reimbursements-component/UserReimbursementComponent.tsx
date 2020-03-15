@@ -65,15 +65,16 @@ export class UserReimbursementComponent extends React.Component<UserReimbursemen
   }
   createReimbursement(e:SyntheticEvent){
     e.preventDefault();
-    // author_idd, amount, description, type
-    let response = revatureCreateReimbursement(
+    revatureCreateReimbursement(
       this.props.token,
       this.props.profile.userId,
       this.state.amount,
       this.state.description,
       this.state.type
-    )
-    console.log(response);
+    ).then( el => {
+      this.props.revatureGetUserReimbursementListActionMapper(this.props.token,this.props.profile.userId);
+      this.setState({isShowCreateReimbursement:false,amount:0,type:1,description:''})
+    })
   }
   render(){
     return(
@@ -85,7 +86,7 @@ export class UserReimbursementComponent extends React.Component<UserReimbursemen
         <Form onSubmit={this.createReimbursement}>
           <Form.Group>
             <Form.Label>Amount</Form.Label>
-            <Form.Control type="text" placeholder="00.00" />
+            <Form.Control type="number" defaultValue={this.state.amount} onChange={this.handleAmount} required/>
           </Form.Group>
           <Form.Label>Type</Form.Label>
           <Form.Group>
@@ -98,7 +99,7 @@ export class UserReimbursementComponent extends React.Component<UserReimbursemen
           </Form.Group>
           <Form.Label>Description</Form.Label>
           <Form.Group>
-            <Form.Control type="text" />
+            <Form.Control as="textarea" rows="3" value={this.state.description} onChange={this.handleDescription} required/>
           </Form.Group>
           <Button type="submit">Submit</Button>
         </Form>
@@ -107,6 +108,7 @@ export class UserReimbursementComponent extends React.Component<UserReimbursemen
           <Col>
             <Table>
               <thead>
+                <tr>
                   <th>ID</th>
                   <th>Author</th>
                   <th>Resolver</th>
@@ -116,10 +118,11 @@ export class UserReimbursementComponent extends React.Component<UserReimbursemen
                   <th>Description</th>
                   <th>Amount</th>
                   <th>Type</th>
-                </thead>
-                <tbody>
-                  {this.props.reimbursementList.map(el=><TableRowComponent reimbursement={el}/>)}
-                </tbody>
+                </tr>
+              </thead>
+              <tbody>
+                {this.props.reimbursementList.map(el=><TableRowComponent key={el.reimbursementId} reimbursement={el}/>)}
+              </tbody>
             </Table>
           </Col>
         </Row>
