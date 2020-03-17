@@ -1,11 +1,12 @@
 import React, { SyntheticEvent } from 'react'
-import { Container, Form, Button, Col, Row } from 'react-bootstrap'
+import { Container, Form, Button, Col, Row, Alert } from 'react-bootstrap'
 import { Redirect } from 'react-router'
 
 interface ILoginProps {
   errorMessage:string
   token:string
   revatureLoginActionMapper: (u:string,p:string) => void
+  revatureErrorActionMapper: () => void
 }
 
 interface ILoginState {
@@ -36,11 +37,16 @@ export class LoginComponent extends React.Component<ILoginProps,ILoginState> {
     this.setState({password:e.currentTarget.value})
   }
   render(){
+    if(this.props.errorMessage){
+      setTimeout(this.props.revatureErrorActionMapper,5000);
+    }
     return(
       this.props.token?(
         <Redirect to="/mainpage" />
       ):(
         <Container className="p-5">
+
+          {this.props.errorMessage && <Alert variant='danger'>{this.props.errorMessage}</Alert>}
           <Row>
             <Col>
               <Form onSubmit={this.submitLogin}>

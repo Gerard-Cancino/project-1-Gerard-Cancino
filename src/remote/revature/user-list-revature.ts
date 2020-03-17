@@ -13,9 +13,26 @@ export async function revatureGetUserList(token:string):Promise<Array<User>>{
   }
   catch(e){
     if(e.status===401){
-      throw new UnauthorizedError()
+      throw new UnauthorizedError();
     }
     else {
+      throw new InternalServerError();
+    }
+  }
+}
+
+export async function revatureUpdateUser(token:string,body:any){
+  try{
+    let response = await revatureClient.patch('/users',body,{
+      headers:{"Authorization":token}
+    });
+    return response.data;
+  }
+  catch(e){
+    if(e.status===401){
+      throw new UnauthorizedError();
+    }
+    else{
       throw new InternalServerError();
     }
   }

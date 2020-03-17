@@ -6,6 +6,7 @@ import { TableRowComponent } from './table-row-component/table-row-component';
 interface UserListProps {
   userList:Array<User>
   token:string
+  location:any
   userListActionMapper: (token:string) => void
 }
 
@@ -19,10 +20,12 @@ export class UserListComponent extends React.Component<UserListProps,UserListSta
     this.state = {
       userQueryString:''
     }
-    if(props.userList.length===0){
+    this.handlerUserQueryString = this.handlerUserQueryString.bind(this);
+  }
+  componentDidMount(){
+    if(this.props.userList.length===0||(this.props.location.state&&this.props.location.state.isUpdate)){
       this.props.userListActionMapper(this.props.token);
     }
-    this.handlerUserQueryString = this.handlerUserQueryString.bind(this);
   }
   handlerUserQueryString (e:any) {
     this.setState({userQueryString:e.target.value})

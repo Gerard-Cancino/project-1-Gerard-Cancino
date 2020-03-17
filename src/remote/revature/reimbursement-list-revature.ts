@@ -63,11 +63,12 @@ export async function revatureCreateReimbursement(token:string, userId:number,am
   }
 }
 
-export async function revatureUpdateReimbursement(token:string,reimbursementId:number,status_id:number){
+export async function revatureUpdateReimbursement(token:string,reimbursementId:number,status_id:number,resolver_id:number){
   try{
     let response = await revatureClient.patch('/reimbursements',{
       id:reimbursementId,
-      status_id:status_id
+      status_id:status_id,
+      resolver_id:resolver_id
     },{
       headers:{"Authorization":token}
     })

@@ -3,10 +3,12 @@ import { Container, Row, Form, Button, Col, Table } from 'react-bootstrap';
 import Reimbursement from '../../models/Reimbursement';
 import { revatureGetReimbursementListByUserId, revatureGetReimbursementListByStatusId, revatureUpdateReimbursement } from '../../remote/revature/reimbursement-list-revature';
 import { TableRowComponent } from './table-row-component/TableRowComponent';
+import { User } from '../../models/User';
 
 interface ReimbursementListProps {
   userId:number,
-  token:string
+  token:string,
+  profile:User
 }
 
 interface ReimbursementListState {
@@ -84,10 +86,10 @@ export class ReimbursementListComponent extends React.Component<ReimbursementLis
       console.error(e)
     }
   }
-  getReimbursementListByStatusId(){
+  async getReimbursementListByStatusId(){
     this.setState({stateOfLoad:stateOfLoad.SEARCHING})
-    revatureGetReimbursementListByStatusId(this.props.token,this.state.statusId)
-    .then(res=>{
+    try{
+      const res = await revatureGetReimbursementListByStatusId(this.props.token,this.state.statusId);
       if(res.length===0){
         this.setState({
           reimbursementList:res,
@@ -100,15 +102,18 @@ export class ReimbursementListComponent extends React.Component<ReimbursementLis
           stateOfLoad:stateOfLoad.FOUND_RESULT
         })
       }
-    })
-    .catch(e=>console.log(e))
+    }
+    catch(e){
+      console.error(e);
+    }
   }
   async updateReimbursement(e:SyntheticEvent,reimbursementId:number,status_id:number){
     e.preventDefault();
     try{
-      await revatureUpdateReimbursement(this.props.token,reimbursementId,status_id);
+      await revatureUpdateReimbursement(this.props.token,reimbursementId,status_id,this.props.profile.userId);
       this.setState({statusId:status_id},()=>{
-        this.getReimbursementListByStatusId()
+        this.getReimbursementListByStatusId();
+        this.setState({statusId:1});
       })
     }
     catch(e){
@@ -130,7 +135,7 @@ export class ReimbursementListComponent extends React.Component<ReimbursementLis
             <Form onSubmit={this.eventGetRLByUserId}>
               <Form.Group controlId="searchUserById">
                 <Form.Label>Search By User ID</Form.Label>
-                <Form.Control type="number" placeholder="User ID" defaultValue={this.state.userId} onChange={this.handlerUserId}/> 
+                <Form.Control type="number" placeholder="User ID" defaultValue={this.state.userId} onChange={this.handlerUserId} required/> 
               </Form.Group>
               <Button type="submit">Submit</Button>
             </Form>
@@ -142,9 +147,9 @@ export class ReimbursementListComponent extends React.Component<ReimbursementLis
               <Form.Group controlId="searchReimbursementStatus">
                 <Form.Label>Search By Reimbursement Status</Form.Label>
                 <Form.Control as="select" onChange={this.handlerStatusId}>
-                  <option value="1">Pending</option>
-                  <option value="2">Approved</option>
-                  <option value="3">Denied</option>  
+                  <option value={1}>Pending</option>
+                  <option value={2}>Approved</option>
+                  <option value={3}>Denied</option>  
                 </Form.Control> 
               </Form.Group>
               <input className="btn btn-primary" type="submit" value="submit"/>

@@ -10,15 +10,29 @@ interface tableRowInterface {
 }
 
 export class TableRowComponent extends React.PureComponent<tableRowInterface,any>{
+  convertDate(num:number){
+    return new Date(+num).toDateString();
+  }
+  convertStatus(num:number){
+    if(num===1){
+      return 'Pending';
+    }
+    else if(num===2){
+      return 'Approved';
+    }
+    else{
+      return 'Denied';
+    }
+  }
   render(){
     return(
       <tr>
         <td>{this.props.reimbursement.reimbursementId}</td>
         <td>{this.props.reimbursement.author}</td>
         <td>{this.props.reimbursement.amount}</td>
-        <td>{this.props.reimbursement.dateSubmitted}</td>
-        <td>{this.props.reimbursement.dateResolved}</td>
-        <td>{this.props.reimbursement.status}</td>
+        <td>{this.convertDate(this.props.reimbursement.dateSubmitted)}</td>
+        <td>{this.convertDate(this.props.reimbursement.dateResolved)}</td>
+        <td>{this.convertStatus(this.props.reimbursement.status)}</td>
         <td>{this.props.reimbursement.description}</td>
         <td>{this.props.reimbursement.resolver}</td>
         <td>{this.props.reimbursement.type}</td>

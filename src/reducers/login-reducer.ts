@@ -9,7 +9,7 @@ import Role from '../models/Role';
 const initialState:ILoginState={
   profile: new User(-1,'','','','',new Role(0,'')),
   token: "",
-  errorMessage:"This is a test"
+  errorMessage:""
 }
 
 export const loginReducer = (state=initialState,action:AnyAction) => {
@@ -31,6 +31,12 @@ export const loginReducer = (state=initialState,action:AnyAction) => {
       return {
         ...state,
         errorMessage:"Something went wrong. Oops!"
+      }
+    }
+    case loginTypes.RESET: {
+      return {
+        ...state,
+        errorMessage:''
       }
     }
     case loginTypes.LOGOUT:{

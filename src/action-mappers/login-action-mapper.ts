@@ -7,6 +7,7 @@ export const loginTypes = {
   SUCCESSFUL_LOGIN: "REVATURE_SUCCESSFUL_LOGIN",
   INVALID_CREDENTIALS: "REVATURE_INVALID_CREDENTIALS",
   INTERNAL_SERVER: "REVATURE_INTERNAL_SERVER_ERROR",
+  RESET:"RESET",
   LOGOUT: "REVATURE_LOGOUT"
 }
 
@@ -22,7 +23,9 @@ export const revatureLoginActionMapper = (username:string,password:string) => as
     })
   }
   catch(e){
-    if(e.status === 400) {
+    console.log(e);
+    console.log('status:' + e.status)
+    if(e.status === 401) {
       dispatch({
         type:loginTypes.INVALID_CREDENTIALS,
         payload:{
@@ -40,13 +43,20 @@ export const revatureLoginActionMapper = (username:string,password:string) => as
     }
   }
 }
-
 export const revatureLogoutActionMapper = () => (dispatch:Dispatch) => {
   dispatch({
     type: loginTypes.LOGOUT,
     payload:{
       token:'',
       profile:new User(-1,"","","","",new Role(-1,""))
+    }
+  })
+}
+export const revatureErrorActionMapper = () => (dispatch:Dispatch) => {
+  dispatch({
+    type: loginTypes.RESET,
+    payload:{
+      errorMessage:''
     }
   })
 }

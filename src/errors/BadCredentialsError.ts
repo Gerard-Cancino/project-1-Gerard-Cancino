@@ -1,8 +1,7 @@
-import { HttpError } from "./HttpError";
-
+import {HttpError} from './HttpError';
 
 export class BadCredentialsError extends HttpError{
-    constructor(){
-        super('Invalid Credentials', 400)
-    }
+  constructor(){
+    super(404,"Invalid Credentials ");
+  }
 }

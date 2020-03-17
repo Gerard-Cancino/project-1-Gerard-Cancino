@@ -1,6 +1,7 @@
-import { HttpError } from './HttpError';
+import {HttpError} from './HttpError';
+
 export class UnauthorizedError extends HttpError{
   constructor(){
-    super('User is not authorized',401);
+    super(401,'User is not authorized');
   }
 }

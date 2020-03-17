@@ -1,6 +1,6 @@
 import { IState } from "../../reducers";
 import { connect } from "react-redux";
-import { revatureLoginActionMapper } from '../../action-mappers/login-action-mapper';
+import { revatureLoginActionMapper,revatureErrorActionMapper } from '../../action-mappers/login-action-mapper';
 import { LoginComponent } from "./LoginComponent";
 
 const mapStateToProps = (state:IState) => {
@@ -11,7 +11,8 @@ const mapStateToProps = (state:IState) => {
 }
 
 const mapDispatchToProps = {
-  revatureLoginActionMapper
+  revatureLoginActionMapper,
+  revatureErrorActionMapper
 }
 
 export default connect(mapStateToProps,mapDispatchToProps)(LoginComponent)

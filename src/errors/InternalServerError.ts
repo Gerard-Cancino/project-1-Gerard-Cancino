@@ -1,7 +1,8 @@
-import { HttpError } from "./HttpError"
+import { HttpError } from "./HttpError";
+
 
 export class InternalServerError extends HttpError{
-    constructor(){
-        super('Internal Server Error', 500)
-    }
+  constructor(){
+    super(500,'Internal Server Error');
+  }
 }

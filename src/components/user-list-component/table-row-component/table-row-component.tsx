@@ -16,13 +16,21 @@ export class TableRowComponent extends React.PureComponent<TableRowProps,any>{
         <td>{this.props.user.email}</td>
         <td>
           <NavLink
-            className="btn btn-info"
+            className="btn btn-link"
             to={{
               pathname:`/reimbursements`,
               state:{
                 userId:this.props.user.userId
               }
             }}>Reimbursements</NavLink>
+          <NavLink
+            className="btn btn-info"
+            to={{
+              pathname:`/user/${this.props.user.userId}`,
+              state:{
+                user:this.props.user
+              }
+            }}>User Info</NavLink>
         </td>
       </tr>
     )
